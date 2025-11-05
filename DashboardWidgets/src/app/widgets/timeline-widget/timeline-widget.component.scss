@@ -1,0 +1,146 @@
+.widget {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 16px;
+  height: 100%;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 1;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.widget-content {
+  padding: 8px 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 16px;
+
+  &.in-progress {
+    background: #2196F3;
+    color: white;
+  }
+
+  &.completed {
+    background: #4CAF50;
+    color: white;
+  }
+
+  &.not-started {
+    background: #9E9E9E;
+    color: white;
+  }
+
+  &.overdue {
+    background: #f44336;
+    color: white;
+  }
+}
+
+.timeline {
+  margin: 20px 0;
+}
+
+.timeline-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.timeline-label {
+  font-size: 13px;
+  color: #666;
+}
+
+.timeline-date {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.timeline-progress {
+  margin: 16px 0;
+  position: relative;
+}
+
+.timeline-line {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.timeline-fill {
+  height: 100%;
+  background: #2196F3;
+  transition: width 0.3s ease;
+}
+
+.timeline-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: white;
+  border: 3px solid #2196F3;
+  border-radius: 50%;
+  transition: left 0.3s ease;
+}
+
+.duration-info {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 13px;
+
+  .label {
+    color: #666;
+  }
+
+  .value {
+    font-weight: 600;
+  }
+}
+
+.loading {
+  text-align: center;
+  color: #999;
+  padding: 20px 0;
+}

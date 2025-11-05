@@ -1,0 +1,33 @@
+<div class="widget statistics-widget">
+  <div class="widget-header">
+    <h3>{{ project()?.name || 'Loading...' }}</h3>
+    <button class="close-btn" (click)="onClose()">×</button>
+  </div>
+  <div class="widget-content">
+    @if (project(); as proj) {
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-label">Completed</div>
+          <div class="stat-value completed">{{ proj.tasksCompleted }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Remaining</div>
+          <div class="stat-value remaining">{{ tasksRemaining() }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Total</div>
+          <div class="stat-value total">{{ proj.tasksTotal }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Progress</div>
+          <div class="stat-value progress">{{ progress() | number:'1.0-0' }}%</div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas #chartCanvas></canvas>
+      </div>
+    } @else {
+      <div class="loading">Loading project data...</div>
+    }
+  </div>
+</div>

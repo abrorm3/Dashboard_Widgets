@@ -1,0 +1,156 @@
+<div class="container">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>{{ title }}</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="openAddWidget()">+ Add Widget</button>
+        <button class="btn btn-secondary" (click)="resetDashboard()">Reset Dashboard</button>
+      </div>
+    </header>
+
+    <div class="filters-section">
+      <div class="filter-group">
+        <label>Search Projects:</label>
+        <input
+          type="text"
+          [ngModel]="searchText()"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="Search by name..."
+          class="filter-input"
+        />
+      </div>
+      <div class="filter-group">
+        <label>Filter by Status:</label>
+        <select
+          [ngModel]="statusFilter()"
+          (ngModelChange)="onStatusChange($event)"
+          class="filter-select"
+        >
+          <option value="all">All</option>
+          <option value="in_progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="not_started">Not Started</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+    </div>
+
+    @if (isLoading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading dashboard...</p>
+      </div>
+    } @else {
+      <div
+        class="widgets-grid"
+        cdkDropList
+        (cdkDropListDropped)="onDrop($event)"
+      >
+        @for (widget of filteredWidgets(); track widget.id) {
+          <div
+            class="widget-wrapper"
+            cdkDrag
+          >
+            <div class="drag-handle" cdkDragHandle>
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <path
+                  d="M9 3h2v2H9V3zm0 4h2v2H9V7zm0 4h2v2H9v-2zm0 4h2v2H9v-2zm0 4h2v2H9v-2zM13 3h2v2h-2V3zm0 4h2v2h-2V7zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z"
+                  fill="currentColor"/>
+              </svg>
+            </div>
+
+            @switch (widget.type) {
+              @case ('progress') {
+                @defer (on viewport) {
+                  <app-progress-widget
+                    [projectIdInput]="widget.projectId"
+                    [onRemove]="removeWidget.bind(this, widget.id)"
+                  />
+                } @placeholder {
+                  <div class="widget-placeholder">Loading widget...</div>
+                }
+              }
+              @case ('statistics') {
+                @defer (on viewport) {
+                  <app-task-statistics-widget
+                    [projectIdInput]="widget.projectId"
+                    [onRemove]="removeWidget.bind(this, widget.id)"
+                  />
+                } @placeholder {
+                  <div class="widget-placeholder">Loading widget...</div>
+                }
+              }
+              @case ('timeline') {
+                @defer (on viewport) {
+                  <app-timeline-widget
+                    [projectIdInput]="widget.projectId"
+                    [onRemove]="removeWidget.bind(this, widget.id)"
+                  />
+                } @placeholder {
+                  <div class="widget-placeholder">Loading widget...</div>
+                }
+              }
+              @case ('realtime') {
+                @defer (on viewport) {
+                  <app-realtime-widget
+                    [projectIdInput]="widget.projectId"
+                    [onRemove]="removeWidget.bind(this, widget.id)"
+                  />
+                } @placeholder {
+                  <div class="widget-placeholder">Loading widget...</div>
+                }
+              }
+            }
+          </div>
+        }
+      </div>
+
+      @if (filteredWidgets().length === 0) {
+        <div class="empty-state">
+          @if (widgets().length === 0) {
+            <h2>No widgets added yet</h2>
+            <p>Click "Add Widget" to get started</p>
+          } @else {
+            <h2>No widgets match the current filter</h2>
+            <p>Try adjusting your search or status filter</p>
+          }
+        </div>
+      }
+    }
+
+    @if (showAddWidget()) {
+      <div class="modal-overlay" (click)="closeAddWidget()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Add New Widget</h2>
+            <button class="close-btn" (click)="closeAddWidget()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Select Project:</label>
+              <select [ngModel]="selectedProjectId()" (ngModelChange)="selectedProjectId.set($event)" class="form-control">
+                @for (project of filteredProjects(); track project.id) {
+                  <option [value]="project.id">{{ project.name }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Widget Type:</label>
+              <select [ngModel]="selectedWidgetType()" (ngModelChange)="selectedWidgetType.set($event)" class="form-control">
+                <option value="progress">Progress Widget</option>
+                <option value="statistics">Task Statistics Widget</option>
+                <option value="timeline">Timeline Widget</option>
+                <option value="realtime">Real-time Widget (Auto-refresh)</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeAddWidget()">Cancel</button>
+            <button class="btn btn-primary" (click)="addWidget()">Add Widget</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>

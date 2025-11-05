@@ -1,0 +1,22 @@
+<div class="widget progress-widget">
+  <div class="widget-header">
+    <h3>{{ project()?.name || 'Loading...' }}</h3>
+    <button class="close-btn" (click)="onClose()">×</button>
+  </div>
+  <div class="widget-content">
+    @if (project(); as proj) {
+      <div class="progress-info">
+        <span class="progress-label">Progress</span>
+        <span class="progress-value">{{ progress() | number:'1.0-0' }}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progress()"></div>
+      </div>
+      <div class="task-count">
+        {{ proj.tasksCompleted }} / {{ proj.tasksTotal }} tasks completed
+      </div>
+    } @else {
+      <div class="loading">Loading project data...</div>
+    }
+  </div>
+</div>
